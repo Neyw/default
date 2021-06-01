@@ -1,0 +1,55 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+group = 'ua.kharkov.khpi.vinokurov'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+//    compileOnly {
+//        extendsFrom annotationProcessor
+//    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+def profiles = "dev"
+bootRun {
+    args = ["--spring.profiles.active=" + profiles]
+}
+dependencies {
+    implementation 'org.hibernate:hibernate-core:5.4.2.Final'
+    implementation 'org.springframework:spring-orm:5.1.6.RELEASE'
+    implementation 'org.apache.tomcat:tomcat-dbcp:9.0.1'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.4.1'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.1'
+    implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+
+
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    compileOnly 'org.projectlombok:lombok:1.18.16'
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+

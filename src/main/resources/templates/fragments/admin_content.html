@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MY SUPER COMPANY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link href="/open-iconic/font/css/open-iconic.css" rel="stylesheet">
+</head>
+<body>
+<div class="bg-dark" th:fragment="content">
+    <div class="container">
+        <h1 class="text-center">Admin Pages</h1>
+        <div>
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Page</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="page: ${pages.pageDatas}">
+                    <td th:text="${count}"></td>
+                    <td><a th:href="@{/{name}/get(name=${page.name})}" th:text="${page.name}"></a></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

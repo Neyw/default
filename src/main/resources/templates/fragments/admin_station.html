@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MY SUPER COMPANY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link href="/open-iconic/font/css/open-iconic.css" rel="stylesheet">
+</head>
+<body>
+<div class="bg-dark text-white" th:fragment="content">
+    <div class="container">
+        <h1 class="text-center">Stations</h1>
+        <div th:if="${not #lists.isEmpty(stations)}">
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="station: ${stations}">
+                    <td><a th:text="${station.name}" th:href="@{/station/get/{id}(id = ${station.id})}"></a></td>
+                    <td><a th:text="${station.address}"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center bg-dark">
+                    <li th:class="'page-item' + ${page>0?disabled: ''}">
+                        <a class="page-link"
+                           th:href="@{/station/page?page={page}&size={size}(page = ${page-1}, size = ${size})}"
+                           tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link"
+                                             th:href="@{/station/page?page={page}&size={size}(page = ${page}, size = ${size})}"
+                                             th:text="${page}"></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           th:href="@{/station/page?page={page}&size={size}(page = ${page+1}, size = ${size})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div th:if="${#lists.isEmpty(cities)}">
+            <h2 class="text-center">No more stations</h2>
+        </div>
+    </div>
+    <hr/>
+    <div class="container" th:if="${#authentication.principal.isAdmin()}">
+        <h1 class="text-center">Create new station</h1>
+        <form th:action="@{/station/admin/create}" th:object="${station}" method="post">
+            <p>Name: <input type="text" th:field="*{name}"/></p>
+            <p>City: <select class="bg-dark text-white" th:field="*{city.id}">
+                <option value="-1" disabled>Select City</option>
+                <option th:each=" city: ${cities}"
+                        th:value="${city.id}"
+                        th:text="${city.name}">
+                </option>
+            </select></p>
+            <p>Address: <input type="text" th:field="*{address}"/></p>
+            <p><input type="submit" value="Submit"/></p>
+        </form>
+    </div>
+
+</div>
+<div class="bg-dark text-white" th:fragment="single_station">
+    <div class="container" th:if="${station!=null}">
+        <h1 class="text-center" th:text="${station.name}"></h1>
+        <h3 class="text-center">Routes</h3>
+        <div th:if="${not #lists.isEmpty(routes)}">
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Begin</th>
+                    <th>End</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="route: ${routes}">
+                    <td><a th:text="${route.name}" th:href="@{/route/get/{id}(id = ${route.id})}"></a>
+                    <td th:text="${route.startStation}"></td>
+                    <td th:text="${route.endStation}"></td>
+                    <td th:text="${route.startTime}"></td>
+                    <td th:text="${route.endTime}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div th:if="${station==null}">
+        <h2 class="text-center">No such station</h2>
+    </div>
+</div>
+</body>
+
+</html>

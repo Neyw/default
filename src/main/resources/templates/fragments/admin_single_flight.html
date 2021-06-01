@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MY SUPER COMPANY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link href="/open-iconic/font/css/open-iconic.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/js/bootstrap-timepicker.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+
+</head>
+<body>
+<div class="bg-dark text-white" th:fragment="content">
+    <div class="container">
+        <h1 class="text-center">single_flights</h1>
+        <div th:if="${not #lists.isEmpty(single_flights)}">
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Plane</th>
+                    <th>Route</th>
+                    <th>Seat Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="single_flight: ${single_flights}">
+                    <td><a th:text="${single_flight.date}"
+                           th:href="@{/single_flight/get/{id}(id = ${single_flight.id})}"></a>
+                    <td th:text="${single_flight.plane.name}"></td>
+                    <td th:text="${single_flight.route.name}"></td>
+                    <td th:text="${single_flight.seat.size()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${#lists.isEmpty(cities)}">
+            <h2 class="text-center">No more single_flights</h2>
+        </div>
+    </div>
+    <hr/>
+    <div class="container" th:if="${#authentication.principal.isAdmin()}">
+        <h1 class="text-center">Create new single_flight</h1>
+        <form th:action="@{/single_flight/admin/create}" th:object="${single_flight}" method="post">
+            <p>Route: <select class="bg-dark text-white" th:field="*{route.id}">
+                <option value="-1" disabled>Select route</option>
+                <option th:each=" route: ${routes}"
+                        th:value="${route.id}"
+                        th:text="${route.name}">
+                </option>
+            </select></p>
+            <div>Date: <input id="datepicker1" type="text"
+                              class="form-control input-small"
+                              th:field="*{date}">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            </div>
+            <p>Plane: <select class="bg-dark text-white" th:field="*{plane.id}">
+                <option value="-1" disabled>Select plane</option>
+                <option th:each="plane: ${planes}"
+                        th:value="${plane.id}"
+                        th:text="${plane.name}">
+                </option>
+            </select></p>
+
+            <p><input type="submit" value="Submit"/></p>
+        </form>
+    </div>
+
+</div>
+<div class="bg-dark text-white" th:fragment="single_single_flight">
+    <div class="container" th:if="${single_flight!=null}">
+        <h1 class="text-center" th:text="${single_flight.route.name} + ': ' + ${single_flight.date}"></h1>
+        <h3 class="text-center">seats</h3>
+        <div th:if="${not #lists.isEmpty(single_flight.seat)}">
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="seat: ${single_flight.seat}">
+                    <td th:text="${seat.number}"></td>
+                    <td th:text="${seat.type}"></td>
+                    <td th:text="${seat.price}"></td>
+                    <td>
+                        <p th:if="${seat.basket}" th:text="occupied"></p>
+                        <div th:unless="${seat.basket}">
+                            <form method="post"
+                                  th:action="@{'/simple_basket/add/userId/'} + ${#authentication.principal.getId()}">
+                                <input type="hidden" th:value="${seat.id}" name="seatId"/>
+                                <p><input type="submit" value="Add to cart"/></p>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${not #lists.isEmpty(single_flight.seat)}">
+            No seats
+        </div>
+    </div>
+    <div th:unless="${single_flight!=null}">
+        <h2 class="text-center">No such single_flight</h2>
+    </div>
+</div>
+
+</body>
+
+</html>

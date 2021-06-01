@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MY SUPER COMPANY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link href="/open-iconic/font/css/open-iconic.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-white">
+
+<div th:replace="fragments/header :: header"></div>
+
+<p th:text="'Hello, ' + ${#authentication.principal.getUsername()} + '!'"></p>
+<p th:if="${error}" class="error">You tried to perform wrong action, so redirection to main page occurred</p>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MY SUPER COMPANY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link href="/open-iconic/font/css/open-iconic.css" rel="stylesheet">
+</head>
+<body>
+<div class="bg-dark text-white" th:fragment="content">
+    <h1 class="text-center">BASKET</h1>
+    <div class="container" th:if="${basket}">
+        <h2 class="text-center">Seats</h2>
+        <div th:if="${not #lists.isEmpty(basket.seat)}">
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <th>Route</th>
+                    <th>Date</th>
+                    <th>Number</th>
+                    <th>Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="seat: ${basket.seat}">
+                    <td th:text="${seat.singleFlight.route.name}"></td>
+                    <td th:text="${seat.singleFlight.date}"></td>
+                    <td th:text="${seat.number}"></td>
+                    <td th:text="${seat.type}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div th:unless="${not #lists.isEmpty(basket.seat)}">
+        <h3>Basket is empty, let's go buy something</h3>
+    </div>
+</div>
+<div th:unless="${basket}">
+    <h2 class="text-center">No such basket</h2>
+</div>
+</body>
+</html>

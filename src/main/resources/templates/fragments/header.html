@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Search by requirements</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">All flights</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/content}">Content</a>
+                </li>
+            </ul>
+        </div>
+        <div class="mx-auto order-0">
+            <a class="navbar-brand mx-auto" th:href="@{/home}">MY SUPER COMPANY</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{#}" onclick="$('#cart_form').submit();">
+                        <span class="oi" data-glyph="cart" aria-hidden="true"></span>
+                    </a>
+                    <form style="visibility: hidden" id="cart_form" method="get" action="#"
+                          th:action="@{'/simple_basket/userId/'} + ${#authentication.principal.getId()}"></form>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{#}" onclick="$('#logout_form').submit();">
+                        <span class="oi oi-account-logout" data-glyph="account-logout" aria-hidden="true"></span>
+                    </a>
+                    <form style="visibility: hidden" id="logout_form" method="post" action="#"
+                          th:action="@{/logout}"></form>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{#}" onclick="$('#get_user_form').submit();">
+                        <span class="oi" data-glyph="person" aria-hidden="true"></span>
+                    </a>
+
+                    <form style="visibility: hidden" id="get_user_form" method="get" action="#"
+                          th:action="@{'/users/get/'} + ${#authentication.principal.getId()}"></form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+</div>
+</body>
+</html>
